@@ -1,5 +1,6 @@
-package com.test.demo;
+package com.test.demo.Controllers;
 
+import com.test.demo.Main;
 import javafx.fxml.FXML;
 
 import java.io.IOException;
@@ -25,8 +26,11 @@ public class MenuBarController {
 
     //Clients button
     @FXML
-    protected void goToClients(){
+    protected void goToClients() throws IOException {
+
         System.out.println("Clients button");
+        Main m = new Main();
+        m.changeScene("ClientView.fxml");
     }
 
     @FXML

@@ -1,7 +1,8 @@
-package com.test.demo;
+package com.test.demo.Controllers;
 
 import com.test.demo.DatabaseManagement.ULogInVerificationDB;
 
+import com.test.demo.Main;
 import com.test.demo.Models.User;
 import javafx.fxml.FXML;
 

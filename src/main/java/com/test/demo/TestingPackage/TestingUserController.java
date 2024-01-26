@@ -1,4 +1,4 @@
-package com.test.demo;
+package com.test.demo.TestingPackage;
 
 import com.test.demo.Main;
 import javafx.application.Application;

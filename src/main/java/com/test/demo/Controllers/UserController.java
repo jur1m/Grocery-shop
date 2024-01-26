@@ -1,27 +1,20 @@
-package com.test.demo;
+package com.test.demo.Controllers;
 
-import com.test.demo.DatabaseManagement.UAddUserToDatabase;
-import com.test.demo.DatabaseManagement.UDeleteUser;
-import com.test.demo.DatabaseManagement.UModifyUser;
-import com.test.demo.DatabaseManagement.USearchForUserID;
+import com.test.demo.DatabaseManagement.*;
 import com.test.demo.Models.User;
-import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.io.IOException;
-import java.net.URL;
 import java.sql.SQLException;
-import java.util.ResourceBundle;
 
-public class UserController implements Initializable {
+
+public class UserController  {
 
     @FXML
     private TextField tfID;
@@ -53,13 +46,16 @@ public class UserController implements Initializable {
             throw new RuntimeException(e);
         }
         if(temp!=null){
+            lblUserNotFound.setText("");
             tfFirstName.setText( temp.getFirstName());
             tfLastName.setText(temp.getLastName());
             tfUsername.setText(temp.getUsername());
             tfPassword.setText(temp.getPassword());
         }
         else{
+            clearTextFields();
             lblUserNotFound.setText("User not found!");
+
         }
     }
 
@@ -75,6 +71,7 @@ public class UserController implements Initializable {
         int intID = Integer.parseInt(tfID.getText());
 
         UModifyUser.modifyData(modifyUser,intID);
+        initialize();
         clearTextFields();
     }
     //Deletes user from database
@@ -82,6 +79,7 @@ public class UserController implements Initializable {
     public void deleteUser() throws SQLException, ClassNotFoundException {
         int intID = Integer.parseInt(tfID.getText());
         UDeleteUser.deleteUser(intID);
+        initialize();
         clearTextFields();
     }
 
@@ -95,13 +93,13 @@ public class UserController implements Initializable {
         newUser.setPassword(tfPassword.getText());
 
         UAddUserToDatabase.addToDatabase(newUser);
+        initialize();
         clearTextFields();
     }
 
     //Clears text fields
     @FXML
     public void clearTextFields(){
-        tfID.clear();
         tfFirstName.clear();
         tfLastName.clear();
         tfUsername.clear();
@@ -123,16 +121,23 @@ public class UserController implements Initializable {
     @FXML
     private TableColumn<User,String> colPassword;
 
-    ObservableList<User> list = FXCollections.observableArrayList();
+    private ObservableList<User> list;
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        colID.setCellValueFactory(new PropertyValueFactory<User,Integer>("ID"));
-        colFirstName.setCellValueFactory(new PropertyValueFactory<User,String>("firstName"));
-        colLastName.setCellValueFactory(new PropertyValueFactory<User,String>("lastName"));
-        colUsername.setCellValueFactory(new PropertyValueFactory<User,String>("username"));
-        colPassword.setCellValueFactory(new PropertyValueFactory<User,String>("password"));
 
+
+    public void initialize() throws SQLException, ClassNotFoundException {
+        list = FXCollections.observableArrayList(UShowAllUsers.getUsers());
         tUser.setItems(list);
+
+
+        colFirstName.setCellValueFactory(cellData -> cellData.getValue().getFirstNameProperty());
+        colLastName.setCellValueFactory(cellData -> cellData.getValue().getLastNameProperty());
+        colUsername.setCellValueFactory(cellData -> cellData.getValue().getUsernameProperty());
+        colPassword.setCellValueFactory(cellData -> cellData.getValue().getPasswordProperty());
+        colID.setCellValueFactory(cellData -> cellData.getValue().getIDProperty().asObject());
+
+        //tUser.setItems(list);
     }
+
+
 }

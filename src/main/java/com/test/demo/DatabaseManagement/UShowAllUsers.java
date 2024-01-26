@@ -1,4 +1,5 @@
-package com.test.demo.TestingPackage;
+package com.test.demo.DatabaseManagement;
+import com.test.demo.Models.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -7,7 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class TestingDatabase {
+public class UShowAllUsers {
     private static final String jdbcUrl = "jdbc:mysql://localhost:3306/myshop";
     private static final String usernameDB = "root";
     private static final String passwordDB = "CEN2b2023";
@@ -16,7 +17,7 @@ public class TestingDatabase {
 
         Class.forName("com.mysql.cj.jdbc.Driver");
 
-        ObservableList<UserWProperties> list = FXCollections.observableArrayList();
+        ObservableList<User> list = FXCollections.observableArrayList();
 
 
         try (java.sql.Connection connection = DriverManager.getConnection(jdbcUrl, usernameDB, passwordDB)) {
@@ -37,7 +38,7 @@ public class TestingDatabase {
 
                 while (resultSet.next()) {
 
-                    UserWProperties temp = new UserWProperties();
+                    User temp = new User();
                     temp.setFirstName(resultSet.getString(first_name));
                     temp.setLastName(resultSet.getString(last_name));
                     temp.setUsername(resultSet.getString(usernameString));

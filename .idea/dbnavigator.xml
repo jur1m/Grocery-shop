@@ -38,6 +38,9 @@
     <last-used-operator value="EQUAL" />
     <filters />
   </component>
+  <component name="DBNavigator.Project.ScriptExecutionManager" clear-outputs="true">
+    <recently-used-interfaces />
+  </component>
   <component name="DBNavigator.Project.Settings">
     <connections>
       <connection id="8cb0d664-69bb-4a51-910d-6257d727efe8" active="true" signed="true">
