@@ -6,12 +6,12 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class Product {
-        private StringProperty productName = new SimpleStringProperty();
-        private IntegerProperty ID = new SimpleIntegerProperty();
-        private IntegerProperty pricePerUnit = new SimpleIntegerProperty();
-        private IntegerProperty stock = new SimpleIntegerProperty();
-        private StringProperty category = new SimpleStringProperty();
-        private StringProperty supplier = new SimpleStringProperty();
+        private final StringProperty productName = new SimpleStringProperty();
+        private final IntegerProperty ID = new SimpleIntegerProperty();
+        private final IntegerProperty pricePerUnit = new SimpleIntegerProperty();
+        private final IntegerProperty stock = new SimpleIntegerProperty();
+        private final IntegerProperty categoryID = new SimpleIntegerProperty();
+        private final IntegerProperty supplierID = new SimpleIntegerProperty();
 
 
         public Product (){
@@ -73,28 +73,28 @@ public class Product {
         this.stock.set(stock);
     }
 
-    public String getCategory() {
-        return category.get();
+    public int getCategory() {
+        return categoryID.get();
     }
 
-    public StringProperty categoryProperty() {
-        return category;
+    public IntegerProperty categoryProperty() {
+        return categoryID;
     }
 
-    public void setCategory(String category) {
-        this.category.set(category);
+    public void setCategory(int category) {
+        this.categoryID.set(category);
     }
 
-    public String getSupplier() {
-        return supplier.get();
+    public int getSupplier() {
+        return supplierID.get();
     }
 
-    public StringProperty supplierProperty() {
-        return supplier;
+    public IntegerProperty supplierProperty() {
+        return supplierID;
     }
 
-    public void setSupplier(String supplier) {
-        this.supplier.set(supplier);
+    public void setSupplier(int supplier) {
+        this.supplierID.set(supplier);
     }
 }
 

@@ -178,7 +178,7 @@ public class ClientController {
         colPoints.setCellValueFactory(cellData -> cellData.getValue().getPointsProperty().asObject());
         colID.setCellValueFactory(cellData -> cellData.getValue().getIDProperty().asObject());
 
-        //tUser.setItems(list);
+
     }
 
 }
