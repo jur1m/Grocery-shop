@@ -39,7 +39,7 @@ public class Product {
             return ID;
         }
 
-        public void setID(int ID) {
+        public void setIDProduct(int ID) {
             this.ID.set(ID);
         }
 

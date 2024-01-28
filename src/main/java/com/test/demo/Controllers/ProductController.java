@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 import java.sql.SQLException;
+import java.util.regex.Pattern;
 
 public class ProductController {
 
@@ -59,41 +60,6 @@ public class ProductController {
     @FXML
     private Button btSearchSupplier;
 
-
-
-    @FXML
-    private TableColumn<?, ?> colCategoryProduct;
-
-
-
-
-
-    @FXML
-    private TableColumn<?, ?> colIdProduct;
-
-
-
-    @FXML
-    private TableColumn<?, ?> colNameProduct;
-
-
-
-    @FXML
-    private TableColumn<?, ?> colStockProduct;
-
-    @FXML
-    private TableColumn<?, ?> colSupplierProduct;
-
-    @FXML
-    private TableColumn<?, ?> colpriceProduct;
-
-
-
-    @FXML
-    private TableView<?> tbProductTable;
-
-
-
     @FXML
     private TextField tfAddToStock;
 
@@ -134,55 +100,180 @@ public class ProductController {
     private Label categoryLabel;
 
 
+    @FXML
+    private Label productLabel = new Label();
+
 
     @FXML
-    void addProductToDatabase(ActionEvent event) {
+    void addProductToDatabase() throws ClassNotFoundException, SQLException {
         Product temp = new Product();
-        temp.setProductName(tfProductName.getText());
-        temp.setPricePerUnit(Integer.parseInt(tfPrice.getText()));
-        temp.setStock(Integer.parseInt(tfStock.getText()));
-        //temp.setCategory();
+
+
+
+        if(tfProductName.getText().isEmpty()){
+            productLabel.setText("Please enter a valid Product name");
+        }
+        else if( tfPrice.getText().isEmpty() || !isNumeric(tfPrice.getText())){
+            productLabel.setText("");
+            productLabel.setText("Please enter a valid Price ");
+        }
+        else{
+            temp.setProductName(tfProductName.getText());
+            temp.setPricePerUnit(Integer.parseInt(tfPrice.getText()));
+            productLabel.setText("");
+            if(isNumeric(tfStock.getText())){
+                temp.setStock(Integer.parseInt(tfStock.getText()));
+            }
+            else{
+                temp.setStock(0);
+            }
+            if(tfCategory.getText().isEmpty()){
+                temp.setCategory(6);
+            }
+            else if(CtSearchForCategory.searchWithID(Integer.parseInt(tfCategory.getText()))==null){
+                System.out.println("Category not found");
+                temp.setCategory(6);
+            }
+            else{
+                temp.setCategory(Integer.parseInt(tfCategory.getText()));
+            }
+            if(tfSupplier.getText().isEmpty()){
+                temp.setSupplier(4);
+            }
+            else if(SSearchSupplier.searchWithID(Integer.parseInt(tfSupplier.getText()))==null){
+                System.out.println("Supplier not found");
+                temp.setSupplier(4);
+            }
+            else{
+                temp.setSupplier(Integer.parseInt(tfSupplier.getText()));
+                PAddProductDB.addToDatabase(temp);
+                initializeProductTable();
+                clearProductTF();
+            }
+
+        }
 
     }
-
-
-
-
 
     @FXML
-    void clearProductTF(ActionEvent event) {
+    void clearProductTF() {
+        tfProductName.clear();
+        tfPrice.clear();
+        tfCategory.clear();
+        tfIDProduct.clear();
+        tfSupplier.clear();
+        tfStock.clear();
+        tfAddToStock.clear();
+        productLabel.setText("");
+    }
+    @FXML
+    void deleteProduct() throws SQLException, ClassNotFoundException {
+        if(tfIDProduct.getText().isEmpty()){
+            productLabel.setText("Please enter a valid ID");
+        }
+        else{
+            int ID = Integer.parseInt(tfIDProduct.getText());
+            productLabel.setText("");
+            PDeleteProduct.deleteProduct(ID);
+            initializeProductTable();
+            clearProductTF();
+        }
+    }
+    @FXML
+    void modifyProduct() throws SQLException, ClassNotFoundException {
+        Product temp = new Product();
+
+        if(tfIDProduct.getText().isEmpty()){
+            productLabel.setText("");
+            productLabel.setText("Please enter a valid ID");
+        }
+        else if(tfProductName.getText().isEmpty()){
+            productLabel.setText("");
+            productLabel.setText("Please enter a valid product name");
+        }
+        else{
+            productLabel.setText("");
+            int ID = Integer.parseInt(tfIDProduct.getText());
+            temp.setProductName(tfProductName.getText());
+            temp.setPricePerUnit(Integer.parseInt(tfPrice.getText()));
+            temp.setStock(Integer.parseInt(tfStock.getText()));
+            temp.setCategory(Integer.parseInt(tfCategory.getText()));
+            temp.setSupplier(Integer.parseInt(tfSupplier.getText()));
+            PModifyproduct.modifyData(temp,ID);
+            initializeProductTable();
+            clearProductTF();
+        }
+    }
+    @FXML
+    void searchForProduct() {
+        if(tfIDProduct.getText().isEmpty()){
+            productLabel.setText("Please enter a valid ID");
+        }
+
+        else{
+            int ID = Integer.parseInt(tfIDProduct.getText());
+            Product temp = new Product();
+            try {
+                temp = PSearchForProduct.searchWithID(ID);
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+            if(temp!=null){
+                productLabel.setText("");
+                tfProductName.setText(temp.getProductName());
+                tfPrice.setText(String.valueOf(temp.getPricePerUnit()));
+                tfStock.setText(String.valueOf(temp.getStock()));
+                tfSupplier.setText(String.valueOf(temp.getSupplier()));
+                tfCategory.setText(String.valueOf(temp.getCategory()));
+
+            }
+            else{
+                clearProductTF();
+                productLabel.setText("Product not found");
+
+            }
+        }
 
     }
+    @FXML
+    void addStockToProduct(){
 
-
-
-
+    }
 
     @FXML
-    void deleteProduct(ActionEvent event) {
-
-    }
-
-
-
-
+    private TableColumn<Product, Integer> colCategoryProduct;
 
     @FXML
-    void modifyProduct(ActionEvent event) {
-
-    }
-
-
-
-
+    private TableColumn<Product, Integer> colIdProduct;
 
     @FXML
-    void searchForProduct(ActionEvent event) {
+    private TableColumn<Product, String> colNameProduct;
+
+    @FXML
+    private TableColumn<Product, Integer> colStockProduct;
+
+    @FXML
+    private TableColumn<Product, Integer> colSupplierProduct;
+
+    @FXML
+    private TableColumn<Product, Integer> colpriceProduct;
+
+    @FXML
+    private TableView<Product> tbProductTable;
+
+    public void initializeProductTable() throws SQLException, ClassNotFoundException {
+        ObservableList<Product> productList = FXCollections.observableArrayList(PShowAllProducts.getProducts());
+        tbProductTable.setItems(productList);
+
+        colIdProduct.setCellValueFactory(cellData -> cellData.getValue().IDProperty().asObject());
+        colNameProduct.setCellValueFactory(cellData -> cellData.getValue().productNameProperty());
+        colStockProduct.setCellValueFactory(cellData -> cellData.getValue().stockProperty().asObject());
+        colSupplierProduct.setCellValueFactory(cellData -> cellData.getValue().supplierProperty().asObject());
+        colpriceProduct.setCellValueFactory(cellData -> cellData.getValue().pricePerUnitProperty().asObject());
+        colCategoryProduct.setCellValueFactory(cellData -> cellData.getValue().categoryProperty().asObject());
+
 
     }
-
-
-
 
 
     //Category management
@@ -409,17 +500,23 @@ public class ProductController {
     public void initializeSupplierTable() throws SQLException, ClassNotFoundException {
         ObservableList<Supplier> supplierList = FXCollections.observableArrayList(SShowAllSuppliers.getSuppliers());
         tbSuppliers.setItems(supplierList);
-
-
         colIDSupplier.setCellValueFactory(cellData -> cellData.getValue().supplierIDProperty().asObject());
         colNameSupplier.setCellValueFactory(cellData -> cellData.getValue().supplierNameProperty());
-
-
     }
 
     public void initialize() throws SQLException, ClassNotFoundException {
         initializeSupplierTable();
         initializeCategoryTable();
+        initializeProductTable();
+    }
+
+
+    private boolean isNumeric(String str) {
+        if (str == null || str.trim().isEmpty()) {
+            return false;
+        }
+        Pattern pattern = Pattern.compile("-?\\d+(\\.\\d+)?");
+        return pattern.matcher(str).matches();
     }
 
 }

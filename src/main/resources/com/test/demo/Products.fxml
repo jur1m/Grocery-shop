@@ -47,10 +47,11 @@
                         <Button fx:id="btAddProduct" layoutX="37.0" layoutY="233.0" mnemonicParsing="false" onAction="#addProductToDatabase" text="Add" />
                         <Button fx:id="btModifyProduct" layoutX="115.0" layoutY="233.0" mnemonicParsing="false" onAction="#modifyProduct" text="Modify" />
                         <Button fx:id="btDeleteProduct" layoutX="221.0" layoutY="233.0" mnemonicParsing="false" onAction="#deleteProduct" text="Delete" />
-                        <Button fx:id="btAddStock" layoutX="37.0" layoutY="279.0" mnemonicParsing="false" text="Add stock" />
+                        <Button fx:id="btAddStock" layoutX="37.0" layoutY="279.0" mnemonicParsing="false" onAction="#addStockToProduct" text="Add stock" />
                         <Button fx:id="btSearchProduct" layoutX="311.0" layoutY="233.0" mnemonicParsing="false" onAction="#searchForProduct" text="Search" />
                         <TextField fx:id="tfAddToStock" layoutX="128.0" layoutY="279.0" prefHeight="25.0" prefWidth="104.0" promptText="Qty to add stock" />
                         <Button layoutX="389.0" layoutY="233.0" mnemonicParsing="false" onAction="#clearProductTF" text="Clear" />
+                        <Label fx:id="productlabel" layoutX="311.0" layoutY="283.0" textFill="#e21414" />
                      </children></AnchorPane>
             </content>
           </Tab>

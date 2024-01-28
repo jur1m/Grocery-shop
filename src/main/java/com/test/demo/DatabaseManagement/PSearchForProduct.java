@@ -1,26 +1,26 @@
 package com.test.demo.DatabaseManagement;
 
-import com.test.demo.Models.Category;
 import com.test.demo.Models.Client;
+import com.test.demo.Models.Product;
 
 import java.sql.*;
 
-public class CtSearchForCategory {
+public class PSearchForProduct {
 
         private static final String jdbcUrl = "jdbc:mysql://localhost:3306/myshop";
         private static final String usernameDB = "root";
         private static final String passwordDB = "CEN2b2023";
 
-        public static Category searchWithID(int ID) throws ClassNotFoundException {
+        public static Product searchWithID(int ID) throws ClassNotFoundException {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Category temp = new Category();
+            Product temp = new Product();
 
             try (Connection connection = DriverManager.getConnection(jdbcUrl, usernameDB, passwordDB)) {
                 System.out.println("Connected to the database!");
 
 
 
-                String insertQuery = "SELECT * FROM product_category WHERE category_ID = ?;";
+                String insertQuery = "SELECT * FROM product WHERE product_ID = ?;";
 
                 try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
 
@@ -29,22 +29,22 @@ public class CtSearchForCategory {
                     try (ResultSet resultSet = preparedStatement.executeQuery()) {
                         if (resultSet.next()) {
 
-                            temp.setCategoryName(resultSet.getString("category"));
-                            temp.setCategoryDescription(resultSet.getString("category_description"));
+                            temp.setProductName(resultSet.getString("name_of_the_product"));
+                            temp.setPricePerUnit(resultSet.getInt("price"));
+                            temp.setStock(resultSet.getInt("stock"));
+                            temp.setCategory(resultSet.getInt("category_ID"));
+                            temp.setSupplier(resultSet.getInt("supplier_ID"));
                         }
                         else{
                             temp=null;
                         }
-                    }
-                }
+                    }}
             } catch (SQLException e) {
                 e.printStackTrace();
             }
 
             return temp;
         }
-
-
 
 
 }
