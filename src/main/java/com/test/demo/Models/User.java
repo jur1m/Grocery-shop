@@ -20,6 +20,7 @@ public class User {
     private  BooleanProperty isAdmin = new SimpleBooleanProperty();
 
 
+
     public User(){
 
     }

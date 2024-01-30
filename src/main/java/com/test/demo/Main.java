@@ -19,7 +19,7 @@ public class Main extends Application {
         testStage = stage;
 
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("test.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
+        Scene scene = new Scene(fxmlLoader.load(),650,450);
         stage.setTitle("Grocery store!");
         stage.setScene(scene);
         stage.show();

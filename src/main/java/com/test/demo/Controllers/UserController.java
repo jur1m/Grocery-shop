@@ -5,10 +5,7 @@ import com.test.demo.Models.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -33,6 +30,8 @@ public class UserController  {
 
     @FXML
     private Label lblUserNotFound;
+    @FXML
+    private CheckBox chIsAdmin = new CheckBox();
 
 
     //Search for users using their personal ID
@@ -51,6 +50,10 @@ public class UserController  {
             tfLastName.setText(temp.getLastName());
             tfUsername.setText(temp.getUsername());
             tfPassword.setText(temp.getPassword());
+            if(temp.getIsAdmin()){
+                chIsAdmin.setSelected(true);
+            }
+
         }
         else{
             clearTextFields();
@@ -69,6 +72,7 @@ public class UserController  {
         modifyUser.setUsername(tfUsername.getText());
         modifyUser.setPassword(tfPassword.getText());
         int intID = Integer.parseInt(tfID.getText());
+        modifyUser.setIsAdmin(chIsAdmin.isSelected());
 
         UModifyUser.modifyData(modifyUser,intID);
         initialize();
@@ -91,6 +95,7 @@ public class UserController  {
         newUser.setLastName(tfLastName.getText());
         newUser.setUsername(tfUsername.getText());
         newUser.setPassword(tfPassword.getText());
+        newUser.setIsAdmin(chIsAdmin.isSelected());
 
         UAddUserToDatabase.addToDatabase(newUser);
         initialize();
@@ -105,7 +110,11 @@ public class UserController  {
         tfUsername.clear();
         tfPassword.clear();
         lblUserNotFound.setText("");
+        chIsAdmin.setSelected(false);
     }
+
+    //public method to check if all the necessary fields for the userController have data
+
 
     //Table view
     @FXML
@@ -120,13 +129,12 @@ public class UserController  {
     private TableColumn<User,String> colUsername;
     @FXML
     private TableColumn<User,String> colPassword;
-
-    private ObservableList<User> list;
-
+    @FXML
+    private TableColumn<User,Boolean> colIsAdmin;
 
 
     public void initialize() throws SQLException, ClassNotFoundException {
-        list = FXCollections.observableArrayList(UShowAllUsers.getUsers());
+        ObservableList<User> list = FXCollections.observableArrayList(UShowAllUsers.getUsers());
         tUser.setItems(list);
 
 
@@ -135,6 +143,7 @@ public class UserController  {
         colUsername.setCellValueFactory(cellData -> cellData.getValue().getUsernameProperty());
         colPassword.setCellValueFactory(cellData -> cellData.getValue().getPasswordProperty());
         colID.setCellValueFactory(cellData -> cellData.getValue().getIDProperty().asObject());
+        colIsAdmin.setCellValueFactory(cellData -> cellData.getValue().getIsBooleanAdmin());
 
         //tUser.setItems(list);
     }

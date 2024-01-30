@@ -86,6 +86,8 @@ public class ClientController {
         lblClientNotFound.setText("");
     }
 
+
+
     @FXML
     void deleteClientFromDB() throws SQLException, ClassNotFoundException {
         int intID = Integer.parseInt(tfClientID.getText());

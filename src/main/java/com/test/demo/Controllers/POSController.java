@@ -1,44 +1,48 @@
 package com.test.demo.Controllers;
 
-
+import com.test.demo.Main;
+import com.test.demo.Models.Client;
+import com.test.demo.Models.Receipt;
 import com.test.demo.Models.ReceiptElement;
+import com.test.demo.Models.User;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
-import java.util.ArrayList;
+import java.io.IOException;
 
 public class POSController {
+    private Client client = new Client();
+    public User user = new User();
+    private Receipt receipt = new Receipt();
+    private int subotal;
+    private int discount;
+    private int total;
 
-    private ArrayList<ReceiptElement> receipt = new ArrayList<ReceiptElement>();
+    private ReceiptElement temp = new ReceiptElement();
+    ObservableList<ReceiptElement> list;
 
 
     @FXML
-    private Button btAddNewClient;
+    private Button btAddClient;
 
     @FXML
     private Button btAddToReceipt;
-
-    public void setBtAddToReceipt(){
-
-    }
-
-    @FXML
-    private Button btConfirmClient;
 
     @FXML
     private Button btConfirmDiscount;
 
     @FXML
     private Button btConfirmReceipt;
-
-    @FXML
-    private ChoiceBox<?> cbNameProduct;
 
     @FXML
     private CheckBox cbxUsePoints;
@@ -59,10 +63,10 @@ public class POSController {
     private Label lblClientName;
 
     @FXML
-    private Label lblClientNotFound;
+    private Label lblPoints;
 
     @FXML
-    private Label lblPoints;
+    private Label lblStatus;
 
     @FXML
     private TableView<?> tbReceipt;
@@ -80,12 +84,6 @@ public class POSController {
     private TextField tfIDProduct;
 
     @FXML
-    private TextField tfIdClient;
-
-    @FXML
-    private TextField tfNameClient;
-
-    @FXML
     private TextField tfPricePerUnit;
 
     @FXML
@@ -99,5 +97,25 @@ public class POSController {
 
     @FXML
     private TextField tfTotalCostProduct;
+
+
+
+
+    //client management
+    @FXML
+    void addClientToReceipt() {
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("AddClientppup.fxml"));
+        Parent root1;
+        try {
+            root1 = (Parent) fxmlLoader.load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        Stage stage = new Stage();
+        stage.setTitle("Add user to receipt");
+        stage.setScene(new Scene(root1));
+        stage.show();
+
+    }
 
 }

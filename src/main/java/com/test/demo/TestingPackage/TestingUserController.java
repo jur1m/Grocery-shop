@@ -17,7 +17,7 @@ public class TestingUserController extends Application {
     @Override
     public void start(Stage stage) throws IOException {
 
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("UserAdministrationView.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("AddClientppup.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Grocery store!");
         stage.setScene(scene);

@@ -2,93 +2,18 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="298.0" prefWidth="282.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
-   <center>
-      <GridPane BorderPane.alignment="CENTER">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <children>
-            <Label text="Name">
-               <GridPane.margin>
-                  <Insets left="20.0" />
-               </GridPane.margin>
-               <font>
-                  <Font name="System Bold" size="13.0" />
-               </font>
-            </Label>
-            <Label text="Surname" GridPane.rowIndex="1">
-               <GridPane.margin>
-                  <Insets left="20.0" />
-               </GridPane.margin>
-               <font>
-                  <Font name="System Bold" size="13.0" />
-               </font>
-            </Label>
-            <Label text="Points" GridPane.rowIndex="2">
-               <GridPane.margin>
-                  <Insets left="20.0" />
-               </GridPane.margin>
-               <font>
-                  <Font name="System Bold" size="13.0" />
-               </font>
-            </Label>
-            <Label text="Address" GridPane.rowIndex="3">
-               <GridPane.margin>
-                  <Insets left="20.0" />
-               </GridPane.margin>
-               <font>
-                  <Font name="System Bold" size="13.0" />
-               </font>
-            </Label>
-            <TextField prefHeight="5.0" prefWidth="141.0" GridPane.columnIndex="1">
-               <GridPane.margin>
-                  <Insets right="10.0" />
-               </GridPane.margin>
-            </TextField>
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="1">
-               <GridPane.margin>
-                  <Insets right="10.0" />
-               </GridPane.margin>
-            </TextField>
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="2">
-               <GridPane.margin>
-                  <Insets right="10.0" />
-               </GridPane.margin>
-            </TextField>
-            <TextField prefHeight="25.0" prefWidth="133.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
-               <padding>
-                  <Insets left="5.0" right="5.0" />
-               </padding>
-               <GridPane.margin>
-                  <Insets right="10.0" />
-               </GridPane.margin>
-            </TextField>
-            <Button mnemonicParsing="false" text="Add client" GridPane.columnIndex="1" GridPane.rowIndex="4">
-               <font>
-                  <Font name="System Bold" size="11.0" />
-               </font></Button>
-         </children>
-      </GridPane>
-   </center>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="283.0" prefWidth="377.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.test.demo.Controllers.PopUpClientController">
    <top>
-      <Label text="Add new client" BorderPane.alignment="CENTER">
+      <Label text="Add client to receipt" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets top="10.0" />
          </BorderPane.margin>
@@ -97,4 +22,121 @@
          </font>
       </Label>
    </top>
+   <right>
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox prefHeight="7.0" prefWidth="377.0">
+               <children>
+                  <Line endX="274.29290771484375" endY="1.2426726818084717" startX="-100.0" />
+               </children>
+            </HBox>
+            <HBox prefHeight="28.0" prefWidth="377.0">
+               <children>
+                  <Label text="ID:">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="tfID" prefHeight="25.0" prefWidth="91.0" promptText="ID">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <HBox.margin>
+                        <Insets left="10.0" right="10.0" />
+                     </HBox.margin>
+                  </TextField>
+                  <Label text="Name:">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Label>
+                  <ChoiceBox fx:id="cbName" opacity="0.5" prefHeight="25.0" prefWidth="130.0">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </ChoiceBox>
+                  <Button fx:id="btSearch" mnemonicParsing="false" onAction="#searchForClient" text="Search">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+            <HBox prefHeight="18.0" prefWidth="376.0">
+               <children>
+                  <Label fx:id="lblError" textFill="#e02727" />
+               </children>
+            </HBox>
+            <HBox prefHeight="38.0" prefWidth="377.0">
+               <children>
+                  <Label text="Client: ">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblClientName" prefHeight="25.0" prefWidth="102.0" text="General">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label text="Points:">
+                     <HBox.margin>
+                        <Insets left="15.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblPoints" prefHeight="17.0" prefWidth="101.0" text="-">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="btAddClToReceipt" mnemonicParsing="false" onAction="#addToReceipt" text="Add">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Button>
+               </children>
+               <padding>
+                  <Insets right="15.0" />
+               </padding>
+            </HBox>
+            <HBox prefHeight="35.0" prefWidth="376.0">
+               <children>
+                  <Label text="Add client to Database">
+                     <font>
+                        <Font name="System Bold" size="19.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox prefHeight="37.0" prefWidth="376.0">
+               <children>
+                  <TextField fx:id="tfFirstName" promptText="First name" />
+                  <TextField fx:id="tfLastName" promptText="Last name">
+                     <HBox.margin>
+                        <Insets left="20.0" />
+                     </HBox.margin>
+                  </TextField>
+               </children>
+            </HBox>
+            <HBox prefHeight="37.0" prefWidth="376.0">
+               <children>
+                  <TextField fx:id="tfPoints" promptText="Points" />
+                  <TextField fx:id="tfAddress" promptText="Address">
+                     <HBox.margin>
+                        <Insets left="20.0" />
+                     </HBox.margin>
+                  </TextField>
+               </children>
+            </HBox>
+            <HBox prefHeight="44.0" prefWidth="376.0">
+               <children>
+                  <Button fx:id="btAddClientToDB" mnemonicParsing="false" onAction="#addToDatabase" text="Add to database" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </right>
 </BorderPane>

@@ -29,6 +29,7 @@ public class UShowAllUsers {
             final String status_of_employee = "status_of_employee";
             final String usernameString = "username";
             final String passwordString = "password";
+            final String isAdmin = "status_of_employee";
 
             String insertQuery = "SELECT * FROM employees;";
 
@@ -45,7 +46,6 @@ public class UShowAllUsers {
                     temp.setPassword(resultSet.getString(passwordString));
                     temp.setID(resultSet.getInt(employee_ID));
                     temp.setIsAdmin(resultSet.getBoolean(status_of_employee));
-
 
                     list.add(temp);
                 }

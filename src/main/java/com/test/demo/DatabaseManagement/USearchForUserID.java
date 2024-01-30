@@ -33,6 +33,7 @@ public class USearchForUserID {
                         temp.setPassword(resultSet.getString("password"));
                         temp.setFirstName(resultSet.getString("first_name"));
                         temp.setLastName(resultSet.getString("last_name"));
+                        temp.setIsAdmin(resultSet.getBoolean("status_of_employee"));
 
                     }
                     else{
