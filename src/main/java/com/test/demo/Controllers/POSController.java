@@ -1,13 +1,16 @@
 package com.test.demo.Controllers;
 
+import com.test.demo.DatabaseManagement.CSearchForClientID;
+import com.test.demo.DatabaseManagement.PSearchForProduct;
+import com.test.demo.DatabaseManagement.RAddReceiptToDatabase;
+import com.test.demo.DatabaseManagement.USearchForUserID;
 import com.test.demo.Main;
-import com.test.demo.Models.Client;
-import com.test.demo.Models.Receipt;
-import com.test.demo.Models.ReceiptElement;
-import com.test.demo.Models.User;
+import com.test.demo.Models.*;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -19,17 +22,266 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
+import java.time.LocalDate;
+import java.util.ResourceBundle;
+import java.util.regex.Pattern;
 
-public class POSController {
-    private Client client = new Client();
+public class POSController implements Initializable {
+
+    //create deafult client and user
+    public Client client = new Client();
     public User user = new User();
-    private Receipt receipt = new Receipt();
-    private int subotal;
-    private int discount;
-    private int total;
 
-    private ReceiptElement temp = new ReceiptElement();
-    ObservableList<ReceiptElement> list;
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        try {
+            client = CSearchForClientID.searchWithID(1);
+            user = USearchForUserID.searchWithID(1);
+        } catch (ClassNotFoundException e) {
+            System.out.println("Client not found");
+        }
+    }
+
+
+    // product textfields
+    @FXML
+    TextField tfUnitsLeft = new TextField();
+    @FXML
+    TextField tfProductName = new TextField();
+    @FXML
+    Label errorLabelPOS = new Label();
+    @FXML
+    private TextField tfTotalCostProduct;
+    @FXML
+    private TextField tfIDProduct;
+
+    @FXML
+    private TextField tfPricePerUnit;
+
+    @FXML
+    private TextField tfQuantityProduct;
+
+    private Product tempProduct = new Product();
+
+
+    //add product with ID
+    @FXML
+    public void searchForProduct(){
+        if(!tfIDProduct.getText().isEmpty() && isNumeric(tfIDProduct.getText())){
+            int ID = Integer.parseInt(tfIDProduct.getText());
+            try {
+                tempProduct=PSearchForProduct.searchWithID(ID);
+                try{
+                    fillTF(1);
+                }
+                catch (NullPointerException e){
+                    errorLabelPOS.setText("Error finding product");
+                }
+
+            } catch (ClassNotFoundException e) {
+                errorLabelPOS.setText("Error finding product");
+            }
+        }
+
+        tfQuantityProduct.textProperty().addListener((observable, oldValue, newValue)->{
+            if(!newValue.isEmpty()){
+                fillTF(Integer.parseInt(newValue));
+
+            }
+        });
+        tfPricePerUnit.textProperty().addListener((observable, oldValue, newValue)->{
+            if(!newValue.isEmpty() && Integer.parseInt(newValue)>=10){
+                tempProduct.setPricePerUnit(Integer.parseInt(newValue));
+                fillTF(tempProduct.getQuantityInReceipt());
+            }
+        });
+
+    }
+    //method to calculate total and fill text fields
+    private void fillTF(int quantity){
+        tfProductName.setText(tempProduct.getProductName());
+        tfPricePerUnit.setText(String.valueOf(tempProduct.getPricePerUnit()));
+        tfUnitsLeft.setText(String.valueOf(tempProduct.getStock()));
+        tempProduct.setQuantityInReceipt(quantity);
+        tfQuantityProduct.setText(String.valueOf(tempProduct.getQuantityInReceipt()));
+        int total = tempProduct.getPricePerUnit()*tempProduct.getQuantityInReceipt();
+        tempProduct.setTotalInReceipt(total);
+        tfTotalCostProduct.setText(String.valueOf(tempProduct.getTotalInReceipt()));
+    }
+
+
+
+
+    //add to arraylist
+    ObservableList<Product> list = FXCollections.observableArrayList();;
+
+    @FXML
+    public void addToReceipt(){
+
+        if(tempProduct!= null && tfProductName.getText()!=null && tfPricePerUnit.getText()!=null && tfQuantityProduct.getText()!=null && tfTotalCostProduct.getText()!=null){
+            boolean set = false;
+            for(int i=0;i<list.size();i++){
+                if(tempProduct.getProductName().equals(list.get(i).getProductName())){
+                    int newQty = list.get(i).getQuantityInReceipt()+tempProduct.getQuantityInReceipt();
+                    list.get(i).setQuantityInReceipt(newQty);
+                    int total = list.get(i).getPricePerUnit()*list.get(i).getQuantityInReceipt();
+                    list.get(i).setTotalInReceipt(total);
+                    set = true;
+                }
+            }
+            if(!set){
+                list.add(tempProduct);
+            }
+
+            tempProduct=null;
+            showReceipt();
+            calculateSubtotal();
+            calculateTotal();
+            tfSubtotal.setText(String.valueOf(subtotal));
+            tfDiscount.setText(String.valueOf(discount));
+            tfTotal.setText(String.valueOf(total));
+
+            clearTF();
+        }
+
+//        if(!list.isEmpty()){
+//            for(int i=0;i<list.size();i++){
+//                System.out.println(list.get(i).getProductName());
+//            }
+//        }
+    }
+
+
+    //Receipt table
+    @FXML
+    private TableView<Product> tbReceipt;
+
+    @FXML
+    private TableColumn<Product, String> colName;
+
+    @FXML
+    private TableColumn<Product, Integer> colPricePerUnit;
+
+    @FXML
+    private TableColumn<Product, Integer> colTotalPrice;
+
+    @FXML
+    private TableColumn<Product, Integer> colUnits;
+
+
+
+
+
+    private void showReceipt(){
+        tbReceipt.setItems(list);
+
+        //colNr.setCellValueFactory(cellData -> cellData.getValue()..asObject());
+        colName.setCellValueFactory(cellData -> cellData.getValue().productNameProperty());
+        colPricePerUnit.setCellValueFactory(cellData -> cellData.getValue().pricePerUnitProperty().asObject());
+        colTotalPrice.setCellValueFactory(cellData -> cellData.getValue().totalInReceiptProperty().asObject());
+        colUnits.setCellValueFactory(cellData -> cellData.getValue().quantityInReceiptProperty().asObject());
+
+        //fill text fields with info from table when a row is cclicked to edit that row
+        tbReceipt.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 1) {
+
+                tempProduct = tbReceipt.getSelectionModel().getSelectedItem();
+                if (tempProduct != null) {
+                    fillTF(tempProduct.getQuantityInReceipt());
+                }
+
+            } else if (event.getClickCount() == 2) {
+                tempProduct = tbReceipt.getSelectionModel().getSelectedItem();
+                deleteRow();
+            }
+        });
+    }
+
+
+    //calculate subtotal
+    private int subtotal = 0;
+    @FXML
+    private TextField tfSubtotal;
+
+    private void calculateSubtotal(){
+        subtotal = 0;
+        for(int i=0;i<list.size();i++){
+
+            subtotal+=list.get(i).getTotalInReceipt();
+        }
+        tfSubtotal.setText(String.valueOf(subtotal));
+        calculateTotal();
+
+    }
+
+    //Add discount to receipt
+    private int discount = 0;
+    @FXML
+    private TextField tfDiscountAll;
+    @FXML
+    private TextField tfDiscount;
+
+    @FXML
+    public void addDiscountToReceipt(){
+        if(!tfDiscountAll.getText().isEmpty() && isNumeric(tfDiscountAll.getText()) && Integer.parseInt(tfDiscountAll.getText())<99999){
+            discount = Integer.parseInt(tfDiscountAll.getText());
+            tfDiscount.setText(String.valueOf(discount));
+            calculateTotal();
+        }
+    }
+
+    //Calculate total of the receipt
+    private int total;
+    @FXML
+    private TextField tfTotal;
+    public void calculateTotal(){
+        total = subtotal - discount;
+        tfTotal.setText(String.valueOf(total));
+    }
+
+    //print receipt and save data to database
+    private Receipt receipt = new Receipt();
+    @FXML
+    public void printReceipt(){
+        //add data to receipt table
+        receipt.setReceiptValue(total);
+        LocalDate currentDate = LocalDate.now();
+        receipt.setDate(currentDate);
+        receipt.setClientID(1);
+        receipt.setEmployeeID(1);
+        int receipt_ID = 0;
+        try {
+            receipt_ID=RAddReceiptToDatabase.addToDatabase(receipt);
+            clearEverything();
+        } catch (ClassNotFoundException e) {
+            System.out.println("Class not found when writing data from pos receipt to database");
+        }
+        //add data to receipt_details
+        if(receipt_ID==0){
+            System.out.println("Data not inserted in DB");
+        }
+        else if(receipt_ID==-1){
+            System.out.println("ID not retrieved");
+        }
+        else{
+
+        }
+
+    }
+
+    //manage user
+    public void managePoints(){
+
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
 
 
     @FXML
@@ -48,18 +300,6 @@ public class POSController {
     private CheckBox cbxUsePoints;
 
     @FXML
-    private TableColumn<?, ?> colName;
-
-    @FXML
-    private TableColumn<?, ?> colPricePerUnit;
-
-    @FXML
-    private TableColumn<?, ?> colTotalPrice;
-
-    @FXML
-    private TableColumn<?, ?> colUnits;
-
-    @FXML
     private Label lblClientName;
 
     @FXML
@@ -68,35 +308,20 @@ public class POSController {
     @FXML
     private Label lblStatus;
 
-    @FXML
-    private TableView<?> tbReceipt;
 
-    @FXML
-    private TextField tfDiscount;
 
-    @FXML
-    private TextField tfDiscountAll;
 
-    @FXML
-    private TextField tfDiscountPerc;
 
-    @FXML
-    private TextField tfIDProduct;
 
-    @FXML
-    private TextField tfPricePerUnit;
 
-    @FXML
-    private TextField tfQuantityProduct;
 
-    @FXML
-    private TextField tfSubtotal;
 
-    @FXML
-    private TextField tfTotal;
 
-    @FXML
-    private TextField tfTotalCostProduct;
+
+
+
+
+
 
 
 
@@ -117,5 +342,49 @@ public class POSController {
         stage.show();
 
     }
+
+
+    //other methods
+
+    //checks if string is a number
+    private boolean isNumeric(String str) {
+        if (str == null || str.trim().isEmpty()) {
+            return false;
+        }
+        Pattern pattern = Pattern.compile("-?\\d+(\\.\\d+)?");
+        return pattern.matcher(str).matches();
+    }
+
+    //clears text fields
+    @FXML
+    private void clearTF(){
+        tfIDProduct.clear();
+        tfProductName.clear();
+        tfPricePerUnit.clear();
+        tfUnitsLeft.clear();
+        tfQuantityProduct.clear();
+        tfTotalCostProduct.clear();
+        errorLabelPOS.setText("");
+        tempProduct=null;
+    }
+
+    //deletes a row in the table
+    private void deleteRow(){
+        for(int i=0;i<list.size();i++){
+            if(tempProduct.getProductName().equals(list.get(i).getProductName())){
+                list.remove(i);
+            }
+        }
+    }
+
+    private void clearEverything(){
+        clearTF();
+        list.clear();
+        subtotal = 0;
+        discount = 0;
+        total = 0;
+    }
+
+
 
 }

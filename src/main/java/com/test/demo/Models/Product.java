@@ -12,6 +12,9 @@ public class Product {
         private final IntegerProperty stock = new SimpleIntegerProperty();
         private final IntegerProperty categoryID = new SimpleIntegerProperty();
         private final IntegerProperty supplierID = new SimpleIntegerProperty();
+        private final IntegerProperty quantityInReceipt = new SimpleIntegerProperty();
+        private final IntegerProperty totalInReceipt = new SimpleIntegerProperty();
+        private final IntegerProperty productNr = new SimpleIntegerProperty();
 
 
         public Product (){
@@ -95,6 +98,41 @@ public class Product {
 
     public void setSupplier(int supplier) {
         this.supplierID.set(supplier);
+    }
+
+    public int getQuantityInReceipt() {
+        return quantityInReceipt.get();
+    }
+
+
+    public IntegerProperty quantityInReceiptProperty() {
+        return quantityInReceipt;
+    }
+    public void setQuantityInReceipt(int quantity){
+            this.quantityInReceipt.set(quantity);
+    }
+
+    public int getTotalInReceipt() {
+        return totalInReceipt.get();
+    }
+
+    public IntegerProperty totalInReceiptProperty() {
+        return totalInReceipt;
+    }
+    public void setTotalInReceipt(int total){
+        this.totalInReceipt.set(total);
+    }
+
+    public int getProductNr() {
+        return productNr.get();
+    }
+
+    public IntegerProperty productNrProperty() {
+        return productNr;
+    }
+
+    public void setProductNr(int Nr){
+            this.productNr.set(Nr);
     }
 }
 

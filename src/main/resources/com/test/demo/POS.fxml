@@ -24,7 +24,6 @@
     <right>
         <TableView fx:id="tbReceipt" prefHeight="267.0" prefWidth="409.0" BorderPane.alignment="CENTER">
             <columns>
-            <TableColumn prefWidth="44.666688323020935" text="Nr" />
                 <TableColumn fx:id="colName" prefWidth="91.33331680297852" text="Name" />
                 <TableColumn fx:id="colPricePerUnit" prefWidth="63.33331298828125" text="Price/unit" />
                 <TableColumn fx:id="colUnits" prefWidth="61.33332824707031" text="Units" />
@@ -40,7 +39,7 @@
          <children>
             <AnchorPane prefHeight="137.0" prefWidth="684.0">
                <children>
-                        <GridPane layoutX="470.0" layoutY="2.0" prefHeight="125.0" prefWidth="200.0" vgap="5.0">
+                        <GridPane layoutX="429.0" layoutY="7.0" prefHeight="125.0" prefWidth="200.0" vgap="5.0">
                             <columnConstraints>
                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -48,14 +47,14 @@
                             <rowConstraints>
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                 <RowConstraints maxHeight="25.99996948242187" minHeight="3.3333129882812464" prefHeight="25.99996948242187" vgrow="SOMETIMES" />
-                                <RowConstraints maxHeight="44.66668701171874" minHeight="10.0" prefHeight="22.000030517578118" vgrow="SOMETIMES" />
-                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="44.66668701171874" minHeight="10.0" prefHeight="21.33329264322917" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="31.3333740234375" minHeight="10.0" prefHeight="31.3333740234375" vgrow="SOMETIMES" />
                             </rowConstraints>
                             <children>
                                 <Label text="Subtotal" />
                                 <Label text="Discount" GridPane.rowIndex="1" />
                                 <Label text="Total" GridPane.rowIndex="2" />
-                                <Button fx:id="btConfirmReceipt" mnemonicParsing="false" text="Print" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                <Button mnemonicParsing="false" onAction="#printReceipt" text="Print" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                 <TextField fx:id="tfSubtotal" GridPane.columnIndex="1" />
                                 <TextField fx:id="tfDiscount" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                 <TextField fx:id="tfTotal" GridPane.columnIndex="1" GridPane.rowIndex="2" />
@@ -66,7 +65,6 @@
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="95.33334350585938" minWidth="10.0" prefWidth="88.0" />
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="114.66665649414062" minWidth="10.0" prefWidth="82.66665649414062" />
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="132.66668701171875" minWidth="10.0" prefWidth="91.33331298828125" />
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="138.66668701171875" minWidth="10.0" prefWidth="138.66668701171875" />
                     </columnConstraints>
                     <rowConstraints>
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -104,9 +102,11 @@
                               <Font name="System Bold" size="13.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="tfDiscountPerc" prefHeight="25.0" prefWidth="98.0" promptText="\%" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <TextField fx:id="tfDiscountAll" prefHeight="25.0" prefWidth="89.0" promptText="ALL" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                        <Button fx:id="btConfirmDiscount" mnemonicParsing="false" text="Confirm" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                        <TextField fx:id="tfDiscountAll" prefHeight="25.0" prefWidth="89.0" promptText="ALL" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Button fx:id="btConfirmDiscount" mnemonicParsing="false" onAction="#addDiscountToReceipt" text="Confirm" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                           <GridPane.margin>
+                              <Insets left="5.0" />
+                           </GridPane.margin></Button>
                         <Label fx:id="lblStatus" text="." GridPane.columnIndex="2" />
                      </children>
                      <opaqueInsets>
@@ -141,20 +141,21 @@
                     </rowConstraints>
                     <children>
                         <Label text="ID" />
-                        <Label text="Product title" GridPane.rowIndex="1" />
+                        <Label text="Product title" GridPane.rowIndex="2" />
                         <Label text="Price/unit" GridPane.rowIndex="3" />
                         <Label text="Quantity" GridPane.rowIndex="5" />
                         <Label text="Total cost" GridPane.rowIndex="6" />
                         <TextField fx:id="tfIDProduct" prefHeight="25.0" prefWidth="55.0" promptText="ID" GridPane.columnIndex="1" />
                         <TextField fx:id="tfPricePerUnit" promptText="Price" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                         <TextField fx:id="tfQuantityProduct" prefHeight="25.0" prefWidth="87.0" promptText="Quantity" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                        <TextField fx:id="tfTotalCostProduct" promptText="Total" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                        <Button fx:id="btAddToReceipt" mnemonicParsing="false" prefHeight="25.0" prefWidth="96.0" text="Add" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                        <TextField fx:id="tfTotalCostProduct" editable="false" promptText="Total" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                        <Button fx:id="btAddToReceipt" mnemonicParsing="false" onAction="#addToReceipt" prefHeight="25.0" prefWidth="96.0" text="Add" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                   <Label text="Units left" GridPane.rowIndex="4" />
-                  <TextField editable="false" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                  <TextField promptText="Title" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Label text="Error" GridPane.rowIndex="2" />
-                  <Button mnemonicParsing="false" text="Search" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <TextField fx:id="tfUnitsLeft" editable="false" promptText="units left" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                  <TextField fx:id="tfProductName" promptText="Title" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Label fx:id="errorLabelPOS" GridPane.rowIndex="1" />
+                  <Button mnemonicParsing="false" onAction="#searchForProduct" text="Search" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Button mnemonicParsing="false" onAction="#clearTF" text="Clear" GridPane.rowIndex="7" />
                     </children>
                <VBox.margin>
                   <Insets left="5.0" />
