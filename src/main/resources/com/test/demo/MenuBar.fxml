@@ -6,37 +6,32 @@
 
 <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="43.0" prefWidth="608.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.test.demo.Controllers.MenuBarController">
    <children>
-      <Button mnemonicParsing="false" onAction="#goToPOS" text="POS">
+      <Button mnemonicParsing="false" onAction="#goToPOS" prefHeight="25.0" prefWidth="77.0" text="POS">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Button>
-      <Button mnemonicParsing="false" onAction="#goToUsers" text="Users">
+      <Button mnemonicParsing="false" onAction="#goToUsers" prefHeight="25.0" prefWidth="83.0" text="Users">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Button>
-      <Button mnemonicParsing="false" onAction="#goToClients" text="Clients">
+      <Button mnemonicParsing="false" onAction="#goToClients" prefHeight="25.0" prefWidth="81.0" text="Clients">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Button>
-      <Button mnemonicParsing="false" onAction="#goToProduct" text="Product">
+      <Button mnemonicParsing="false" onAction="#goToProduct" prefHeight="25.0" prefWidth="76.0" text="Product">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Button>
-      <Button mnemonicParsing="false" onAction="#goToDiscounts" text="Discounts">
+      <Button mnemonicParsing="false" onAction="#goToReports" prefHeight="25.0" prefWidth="87.0" text="Reports">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Button>
-      <Button mnemonicParsing="false" onAction="#goToReports" text="Reports">
-         <font>
-            <Font name="System Bold" size="12.0" />
-         </font>
-      </Button>
-      <Button mnemonicParsing="false" onAction="#logOut" text="Log out">
+      <Button mnemonicParsing="false" onAction="#logOut" prefHeight="25.0" prefWidth="87.0" text="Log out">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>

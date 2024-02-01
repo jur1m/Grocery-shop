@@ -1,9 +1,6 @@
 package com.test.demo.Controllers;
 
-import com.test.demo.DatabaseManagement.CSearchForClientID;
-import com.test.demo.DatabaseManagement.PSearchForProduct;
-import com.test.demo.DatabaseManagement.RAddReceiptToDatabase;
-import com.test.demo.DatabaseManagement.USearchForUserID;
+import com.test.demo.DatabaseManagement.*;
 import com.test.demo.Main;
 import com.test.demo.Models.*;
 import javafx.collections.FXCollections;
@@ -35,12 +32,10 @@ public class POSController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        try {
-            client = CSearchForClientID.searchWithID(1);
-            user = USearchForUserID.searchWithID(1);
-        } catch (ClassNotFoundException e) {
-            System.out.println("Client not found");
-        }
+
+            client.setID(1);
+            user.setID(1);
+
     }
 
 
@@ -70,8 +65,10 @@ public class POSController implements Initializable {
     public void searchForProduct(){
         if(!tfIDProduct.getText().isEmpty() && isNumeric(tfIDProduct.getText())){
             int ID = Integer.parseInt(tfIDProduct.getText());
+
             try {
                 tempProduct=PSearchForProduct.searchWithID(ID);
+                tempProduct.setIDProduct(ID);
                 try{
                     fillTF(1);
                 }
@@ -87,7 +84,6 @@ public class POSController implements Initializable {
         tfQuantityProduct.textProperty().addListener((observable, oldValue, newValue)->{
             if(!newValue.isEmpty()){
                 fillTF(Integer.parseInt(newValue));
-
             }
         });
         tfPricePerUnit.textProperty().addListener((observable, oldValue, newValue)->{
@@ -108,6 +104,7 @@ public class POSController implements Initializable {
         int total = tempProduct.getPricePerUnit()*tempProduct.getQuantityInReceipt();
         tempProduct.setTotalInReceipt(total);
         tfTotalCostProduct.setText(String.valueOf(tempProduct.getTotalInReceipt()));
+
     }
 
 
@@ -238,6 +235,7 @@ public class POSController implements Initializable {
     public void calculateTotal(){
         total = subtotal - discount;
         tfTotal.setText(String.valueOf(total));
+        managePoints();
     }
 
     //print receipt and save data to database
@@ -248,12 +246,11 @@ public class POSController implements Initializable {
         receipt.setReceiptValue(total);
         LocalDate currentDate = LocalDate.now();
         receipt.setDate(currentDate);
-        receipt.setClientID(1);
-        receipt.setEmployeeID(1);
+        receipt.setClientID(client.getID());
+        receipt.setEmployeeID(user.getID());
         int receipt_ID = 0;
         try {
             receipt_ID=RAddReceiptToDatabase.addToDatabase(receipt);
-            clearEverything();
         } catch (ClassNotFoundException e) {
             System.out.println("Class not found when writing data from pos receipt to database");
         }
@@ -265,13 +262,30 @@ public class POSController implements Initializable {
             System.out.println("ID not retrieved");
         }
         else{
-
+            for(int i =0;i<list.size();i++){
+                try {
+                    RDAddReceiptDetailsToDB.addToDatabase(list.get(i).getID(),list.get(i).getQuantityInReceipt(),receipt_ID);
+                } catch (ClassNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }
+        clearEverything();
 
     }
 
     //manage user
     public void managePoints(){
+        int points = client.getPoints();
+        if(cbxUsePoints.isSelected()){
+            discount += (points/10);
+            points = 0;
+        }
+        else{
+            points += getPointsFromReceipt();
+        }
+        client.setPoints(points);
+
 
     }
 
@@ -383,8 +397,16 @@ public class POSController implements Initializable {
         subtotal = 0;
         discount = 0;
         total = 0;
+        tfSubtotal.clear();
+        tfDiscount.clear();
+        tfDiscountAll.clear();
+        tfTotal.clear();
     }
 
+    private int getPointsFromReceipt(){
+        int points = total/2;
+        return points;
+    }
 
 
 }

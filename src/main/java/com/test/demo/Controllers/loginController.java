@@ -40,7 +40,8 @@ public class loginController {
         check = ULogInVerificationDB.checkUser(tfUsername.getText(),tfPassword.getText());
         if(!check.getUsername().equals("N404")){
             System.out.println("login success");
-            m.changeScene("UserAdministrationView.fxml");
+
+            m.changeScene("POS.fxml");
         }
         else{
             lblError.setText("Error logging in");

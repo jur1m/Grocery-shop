@@ -39,10 +39,6 @@ public class MenuBarController {
         m.changeScene("Products.fxml");
     }
 
-    @FXML
-    protected void goToDiscounts(){
-        System.out.println("Discounts button");
-    }
 
     @FXML
     protected void goToReports(){
