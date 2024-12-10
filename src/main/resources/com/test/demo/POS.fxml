@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="446.0" prefWidth="684.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.test.demo.Controllers.POSController">
+    <top>
+        <HBox prefHeight="45.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
+        <fx:include source="MenuBar.fxml" />
+    </top>
+    <right>
+        <TableView fx:id="tbReceipt" prefHeight="294.0" prefWidth="299.0" BorderPane.alignment="CENTER">
+            <columns>
+                <TableColumn fx:id="colName" prefWidth="75.0" text="Name" />
+                <TableColumn fx:id="colPricePerUnit" prefWidth="75.0" text="Price/unit" />
+                <TableColumn fx:id="colUnits" prefWidth="75.0" text="Units" />
+                <TableColumn fx:id="colTotalPrice" prefWidth="75.0" text="Total price" />
+            </columns>
+            <BorderPane.margin>
+                <Insets bottom="5.0" right="10.0" />
+            </BorderPane.margin>
+        </TableView>
+    </right>
+    <bottom>
+        <VBox prefHeight="97.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+            <children>
+                <HBox prefHeight="97.0" prefWidth="596.0">
+                    <children>
+                        <GridPane vgap="5.0">
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            </rowConstraints>
+                            <HBox.margin>
+                                <Insets left="390.0" />
+                            </HBox.margin>
+                            <children>
+                                <Label text="Subtotal" />
+                                <Label text="Discount" GridPane.rowIndex="1" />
+                                <Label text="Total" GridPane.rowIndex="2" />
+                                <Button fx:id="btConfirmReceipt" mnemonicParsing="false" text="Print" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                <TextField fx:id="tfSubtotal" GridPane.columnIndex="1" />
+                                <TextField fx:id="tfDiscount" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                <TextField fx:id="tfTotal" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Label text="." GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                            </children>
+                        </GridPane>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </bottom>
+   <center>
+        <VBox prefHeight="303.0" prefWidth="375.0" BorderPane.alignment="CENTER">
+            <children>
+                <GridPane>
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                    <children>
+                        <Label text="ID" />
+                        <Label text="Name" GridPane.columnIndex="1" />
+                        <Label text="Price/unit" GridPane.columnIndex="2" />
+                        <Label text="Quantity" GridPane.columnIndex="3" />
+                        <Label text="Total cost" GridPane.columnIndex="4" />
+                        <TextField fx:id="tfIDProduct" prefHeight="25.0" prefWidth="55.0" GridPane.rowIndex="1" />
+                        <ChoiceBox fx:id="cbNameProduct" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <TextField fx:id="tfPricePerUnit" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <TextField fx:id="tfQuantityProduct" prefHeight="25.0" prefWidth="87.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                        <TextField fx:id="tfTotalCostProduct" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                        <Button fx:id="btAddToReceipt" mnemonicParsing="false" prefHeight="25.0" prefWidth="96.0" text="Add" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+                    </children>
+                </GridPane>
+            <HBox prefHeight="31.0" prefWidth="375.0">
+               <children>
+                  <Label prefHeight="17.0" prefWidth="32.0" text="User:">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label text="." />
+               </children>
+            </HBox>
+                <Label prefHeight="20.0" prefWidth="76.0" text="Add client">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font></Label>
+                <HBox prefHeight="35.0" prefWidth="191.0">
+                    <children>
+                        <Label text="ID" />
+                        <TextField fx:id="tfIdClient" prefHeight="25.0" prefWidth="59.0" promptText="ID" />
+                        <Label text="Name" />
+                        <TextField fx:id="tfNameClient" prefHeight="25.0" prefWidth="98.0" />
+                        <Button fx:id="btConfirmClient" mnemonicParsing="false" prefHeight="25.0" prefWidth="66.0" text="Confirm">
+                     <HBox.margin>
+                        <Insets left="8.0" />
+                     </HBox.margin></Button>
+                  <Label fx:id="lblClientNotFound" text="Client not found">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </Label>
+                    </children>
+                </HBox>
+            <HBox prefHeight="30.0" prefWidth="375.0">
+               <children>
+                  <Label prefHeight="20.0" prefWidth="95.0" text="Client name: ">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblClientName" text="General">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="btAddNewClient" mnemonicParsing="false" text="Add new client">
+                     <HBox.margin>
+                        <Insets left="70.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+                <HBox prefHeight="26.0" prefWidth="375.0">
+                    <children>
+                  <Label text="Points: ">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblPoints" text="0">
+                     <HBox.margin>
+                        <Insets right="15.0" />
+                     </HBox.margin>
+                  </Label>
+                        <Label />
+                        <CheckBox fx:id="cbxUsePoints" mnemonicParsing="false" text="Use points for discount" />
+                    </children>
+                </HBox>
+            <HBox prefHeight="34.0" prefWidth="375.0">
+               <children>
+                  <Label text="Discount">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="tfDiscountAll" prefHeight="25.0" prefWidth="89.0" promptText="ALL">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </TextField>
+                  <TextField fx:id="tfDiscountPerc" prefHeight="25.0" prefWidth="98.0" promptText="\%">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </TextField>
+                  <Button fx:id="btConfirmDiscount" mnemonicParsing="false" text="Confirm">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+            </children>
+        </VBox>
+   </center>
+</BorderPane>
